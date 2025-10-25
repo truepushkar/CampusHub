@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+  <div class="md:col-span-2">
+    <h2 class="text-xl font-semibold mb-4">Attendance Records</h2>
+    <div class="space-y-2">
+      {% for r in records %}
+        <div class="card flex justify-between items-center">
+          <div>
+            <div class="font-medium">{{ r.student_name }} ({{ r.student_id }})</div>
+            <div class="small-muted">{{ r.date }} • {{ r.status }}</div>
+          </div>
+          <div class="small-muted text-sm">{{ r.created_at.strftime('%Y-%m-%d') if r.created_at else '' }}</div>
+        </div>
+      {% else %}
+        <p class="small-muted">No attendance records yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if admin %}
+  <aside class="card">
+    <h3 class="font-semibold">Mark Attendance</h3>
+    <form id="attendanceForm" class="mt-3 space-y-3">
+      <input name="student_id" placeholder="Student ID" required class="w-full border rounded px-2 py-1" />
+      <input name="student_name" placeholder="Student name" class="w-full border rounded px-2 py-1" />
+      <input name="date" type="date" class="w-full border rounded px-2 py-1" />
+      <select name="status" class="w-full border rounded px-2 py-1">
+        <option value="present">Present</option>
+        <option value="absent">Absent</option>
+        <option value="late">Late</option>
+      </select>
+      <button class="bg-slate-700 text-white px-4 py-2 rounded">Submit</button>
+    </form>
+  </aside>
+  {% endif %}
+</div>
+{% endblock %}

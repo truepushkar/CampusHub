@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+  <div class="md:col-span-2">
+    <h2 class="text-xl font-semibold mb-4">Complaints & Requests</h2>
+    <div class="space-y-3">
+      {% for c in complaints %}
+        <div class="card">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-semibold">{{ c.title }}</h3>
+              <p class="small-muted">by {{ c.user or 'anonymous' }} — {{ c.category }}</p>
+            </div>
+            <span class="px-2 py-1 text-sm rounded {{ 'bg-yellow-200' if c.status=='open' else 'bg-green-200' }}">{{ c.status }}</span>
+          </div>
+          <p class="mt-2">{{ c.description }}</p>
+
+          {% if admin and c.status == 'open' %}
+          <form onsubmit="event.preventDefault(); resolveComplaint('{{ c._id }}');" class="mt-2">
+            <input type="text" name="update" placeholder="Resolution note" class="border rounded px-2 py-1 text-sm w-full mb-1" />
+            <button class="bg-green-600 text-white text-sm px-2 py-1 rounded">Mark Resolved</button>
+          </form>
+          {% endif %}
+        </div>
+      {% else %}
+        <p class="small-muted">No complaints yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Everyone can submit complaints -->
+  <aside class="card">
+    <h3 class="font-semibold">Lodge a complaint/request</h3>
+    <form id="complaintForm" class="mt-3 space-y-3">
+      <input name="user" placeholder="Your name" class="w-full border rounded px-2 py-1" />
+      <input name="category" placeholder="Category (hostel/academics/etc.)" class="w-full border rounded px-2 py-1" />
+      <input name="title" placeholder="Short title" class="w-full border rounded px-2 py-1" />
+      <textarea name="description" placeholder="Describe the issue" class="w-full border rounded px-2 py-1"></textarea>
+      <button class="bg-red-600 text-white px-4 py-2 rounded">Submit</button>
+    </form>
+  </aside>
+</div>
+
+<script>
+async function resolveComplaint(id) {
+  const update = event.target.querySelector('input[name="update"]').value;
+  await fetch(`/api/complaints/${id}/resolve`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ update })
+  });
+  location.reload();
+}
+</script>
+{% endblock %}

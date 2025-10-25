@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+  <div class="md:col-span-2">
+    <h2 class="text-xl font-semibold mb-4">Notices</h2>
+    <div class="space-y-3">
+      {% for n in notices %}
+        {% include "components/_notice_card.html" with context %}
+      {% else %}
+        <p class="small-muted">No notices.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if admin %}
+  <!-- Admin-only posting form -->
+  <aside class="card">
+    <h3 class="font-semibold">Create Notice</h3>
+    <form id="noticeForm" class="mt-3 space-y-3">
+      <input name="title" placeholder="Title" required class="w-full border rounded px-2 py-1" />
+      <input name="audience" placeholder="Audience (e.g., all, hostel, cs)" class="w-full border rounded px-2 py-1" />
+      <textarea name="body" placeholder="Notice body" class="w-full border rounded px-2 py-1"></textarea>
+      <button class="bg-green-600 text-white px-4 py-2 rounded">Post Notice</button>
+    </form>
+  </aside>
+  {% endif %}
+</div>
+{% endblock %}

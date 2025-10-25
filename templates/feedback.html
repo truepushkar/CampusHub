@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+  <div class="md:col-span-2">
+    <h2 class="text-xl font-semibold mb-4">Feedback & Suggestions</h2>
+    <div class="space-y-3">
+      {% for f in feedbacks %}
+        <div class="card">
+          <div class="flex justify-between">
+            <div>
+              <h3 class="font-semibold">{{ f.type|capitalize }}</h3>
+              <p class="small-muted">by {{ f.user or 'anonymous' }} • {{ f.created_at.strftime('%Y-%m-%d') if f.created_at else '' }}</p>
+            </div>
+          </div>
+          <p class="mt-2">{{ f.text }}</p>
+        </div>
+      {% else %}
+        <p class="small-muted">No feedback yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Anyone can send feedback -->
+  <aside class="card">
+    <h3 class="font-semibold">Send Feedback</h3>
+    <form id="feedbackForm" class="mt-3 space-y-3">
+      <input name="user" placeholder="Your name (optional)" class="w-full border rounded px-2 py-1" />
+      <select name="type" class="w-full border rounded px-2 py-1">
+        <option value="general">General</option>
+        <option value="improvement">Improvement</option>
+        <option value="bug">Bug</option>
+      </select>
+      <textarea name="text" placeholder="Your message" required class="w-full border rounded px-2 py-1"></textarea>
+      <button class="bg-emerald-600 text-white px-4 py-2 rounded">Send</button>
+    </form>
+  </aside>
+</div>
+{% endblock %}

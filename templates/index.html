@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <section class="card">
+    <h2 class="text-lg font-semibold">Upcoming Events</h2>
+    {% if events %}
+      <div class="mt-4 space-y-3">
+        {% for e in events %}
+          {% include "components/_event_card.html" with context %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="small-muted mt-4">No upcoming events found.</p>
+    {% endif %}
+    <p class="mt-4"><a href="{{ url_for('events_page') }}" class="text-blue-600">View all events</a></p>
+  </section>
+
+  <section class="card">
+    <h2 class="text-lg font-semibold">Recent Notices</h2>
+    {% if notices %}
+      <div class="mt-4 space-y-3">
+        {% for n in notices %}
+          {% include "components/_notice_card.html" with context %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="small-muted mt-4">No notices yet.</p>
+    {% endif %}
+    <p class="mt-4"><a href="{{ url_for('notices_page') }}" class="text-blue-600">View all notices</a></p>
+  </section>
+</div>
+{% endblock %}

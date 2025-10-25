@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-2xl font-semibold mb-6">Admin Dashboard</h2>
+
+<div class="grid md:grid-cols-2 gap-6">
+  <section class="card">
+    <h3 class="font-semibold">Recent Events</h3>
+    {% for e in events %}
+      <div class="border-b py-2">
+        <strong>{{ e.title }}</strong> — {{ e.date }}
+      </div>
+    {% else %}
+      <p class="small-muted">No events yet.</p>
+    {% endfor %}
+    <a href="{{ url_for('events_page') }}" class="text-blue-600 text-sm mt-2 block">Manage Events</a>
+  </section>
+
+  <section class="card">
+    <h3 class="font-semibold">Recent Notices</h3>
+    {% for n in notices %}
+      <div class="border-b py-2">
+        <strong>{{ n.title }}</strong> — {{ n.audience }}
+      </div>
+    {% else %}
+      <p class="small-muted">No notices yet.</p>
+    {% endfor %}
+    <a href="{{ url_for('notices_page') }}" class="text-blue-600 text-sm mt-2 block">Manage Notices</a>
+  </section>
+
+  <section class="card md:col-span-2">
+    <h3 class="font-semibold mb-2">Recent Complaints</h3>
+    {% for c in complaints %}
+      <div class="border-b py-2">
+        <strong>{{ c.title }}</strong> — {{ c.category }} • {{ c.status }}
+      </div>
+    {% else %}
+      <p class="small-muted">No complaints.</p>
+    {% endfor %}
+  </section>
+</div>
+
+<p class="mt-6">
+  <a href="{{ url_for('logout') }}" class="text-red-600 underline">Logout</a>
+</p>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+  <div class="md:col-span-2">
+    <h2 class="text-xl font-semibold mb-4">Events</h2>
+    <div class="space-y-3">
+      {% for e in events %}
+        {% include "components/_event_card.html" with context %}
+      {% else %}
+        <p class="small-muted">No events scheduled.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if admin %}
+  <!-- Only admin sees this form -->
+  <aside class="card">
+    <h3 class="font-semibold">Create Event</h3>
+    <form id="eventForm" class="mt-3 space-y-3">
+      <input name="title" placeholder="Title" required class="w-full border rounded px-2 py-1" />
+      <input name="date" type="date" class="w-full border rounded px-2 py-1" />
+      <input name="location" placeholder="Location" class="w-full border rounded px-2 py-1" />
+      <textarea name="description" placeholder="Description" class="w-full border rounded px-2 py-1"></textarea>
+      <button class="bg-blue-600 text-white px-4 py-2 rounded">Add Event</button>
+    </form>
+  </aside>
+  {% endif %}
+</div>
+{% endblock %}

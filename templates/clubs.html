@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+  <div class="md:col-span-2">
+    <h2 class="text-xl font-semibold mb-4">Clubs & Projects</h2>
+    <div class="space-y-3">
+      {% for club in clubs %}
+        <div class="card">
+          <h3 class="font-semibold">{{ club.name }}</h3>
+          <p class="small-muted">{{ club.members|length }} members • created {{ club.created_at.strftime('%Y-%m-%d') if club.created_at else '' }}</p>
+          <p class="mt-2">{{ club.description }}</p>
+
+          {% if club.posts %}
+          <div class="mt-3 border-t pt-3 space-y-2">
+            <h4 class="text-sm font-medium">Recent posts</h4>
+            {% for p in club.posts %}
+              <div class="text-sm small-muted"><strong>{{ p.author or 'someone' }}:</strong> {{ p.text }}</div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      {% else %}
+        <p class="small-muted">No clubs available.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if admin %}
+  <!-- Only admin can create clubs -->
+  <aside class="card">
+    <h3 class="font-semibold">Create Club / Project</h3>
+    <form id="clubForm" class="mt-3 space-y-3" onsubmit="event.preventDefault(); createClub();">
+      <input id="clubName" name="name" placeholder="Club name" required class="w-full border rounded px-2 py-1" />
+      <textarea id="clubDesc" name="description" placeholder="Short description" class="w-full border rounded px-2 py-1"></textarea>
+      <input id="clubMembers" name="members" placeholder="Members (comma separated)" class="w-full border rounded px-2 py-1" />
+      <button class="bg-indigo-600 text-white px-4 py-2 rounded">Create</button>
+    </form>
+    <script>
+      async function createClub(){
+        const name = document.getElementById('clubName').value;
+        const description = document.getElementById('clubDesc').value;
+        const members = document.getElementById('clubMembers').value;
+        await fetch('/api/clubs', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({name, description, members})
+        });
+        location.reload();
+      }
+    </script>
+  </aside>
+  {% endif %}
+</div>
+{% endblock %}

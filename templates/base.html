@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{% block title %}CampusHub{% endblock %}</title>
+
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Optional: Syntax Highlighting (same vibe as OrionPaste) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+
+    <!-- Custom Styles -->
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      ::selection {
+        background: #14b8a6;
+        color: #fff;
+      }
+      pre[class*="language-"] {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+
+  <body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="backdrop-blur-sm bg-slate-800/70 border-b border-slate-700 shadow-md">
+      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/" class="font-extrabold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-indigo-400 hover:scale-105 transition-transform">
+          Campus<span class="text-indigo-300">Hub</span>
+        </a>
+        <div class="flex items-center space-x-4 text-sm text-slate-300">
+          <a href="{{ url_for('events_page') }}" class="hover:text-teal-400 transition">Events</a>
+          <a href="{{ url_for('notices_page') }}" class="hover:text-teal-400 transition">Notices</a>
+          <a href="{{ url_for('complaints_page') }}" class="hover:text-teal-400 transition">Complaints</a>
+          <a href="{{ url_for('clubs_page') }}" class="hover:text-teal-400 transition">Clubs</a>
+          <a href="{{ url_for('attendance_page') }}" class="hover:text-teal-400 transition">Attendance</a>
+          <a href="{{ url_for('feedback_page') }}" class="hover:text-teal-400 transition">Feedback</a>
+
+          {% if session.get('is_admin') %}
+            <a href="{{ url_for('admin_dashboard') }}" class="text-indigo-400 hover:text-teal-400">Admin</a>
+            <a href="{{ url_for('logout') }}" class="text-rose-400 hover:text-rose-300">Logout</a>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="text-teal-400 hover:text-teal-300">Login</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <main class="flex-1 max-w-6xl mx-auto p-6 w-full fade-in">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="mb-4 space-y-2">
+            {% for category, msg in messages %}
+              <div class="px-4 py-2 rounded-lg text-sm font-medium shadow-md 
+                  {{ 'bg-rose-700/80 text-rose-100 border border-rose-600' if category=='error' else 'bg-teal-700/80 text-teal-100 border border-teal-600' }}">
+                {{ msg }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-6xl mx-auto px-6 py-8 text-sm text-slate-500 text-center border-t border-slate-800">
+      <p>🎓 CampusHub • Simplifying College Life • Made by Code for Benefits</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

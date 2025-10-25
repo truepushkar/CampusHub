@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="flex justify-between">
+    <div>
+      <h3 class="font-semibold">{{ n.title }}</h3>
+      <p class="small-muted">To: {{ n.audience or 'all' }}</p>
+    </div>
+    <div class="text-sm">
+      <form action="#" onsubmit="return false;">
+        <button type="button" onclick="fetch('/api/notices/{{ n._id }}', {method:'DELETE'}).then(()=>location.reload())" class="text-red-600 text-sm">Delete</button>
+      </form>
+    </div>
+  </div>
+  <p class="mt-2">{{ n.body }}</p>
+</div>

@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="flex justify-between items-start">
+    <div>
+      <h3 class="font-semibold">{{ e.title }}</h3>
+      <p class="small-muted">{{ e.date or 'No date' }} • {{ e.location or 'TBA' }}</p>
+    </div>
+    <div class="text-sm">
+      <form action="#" onsubmit="return false;">
+        <button type="button" onclick="fetch('/api/events/{{ e._id }}', {method:'DELETE'}).then(()=>location.reload())" class="text-red-600 text-sm">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% if e.description %}
+    <p class="mt-2">{{ e.description }}</p>
+  {% endif %}
+</div>
