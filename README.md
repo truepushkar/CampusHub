@@ -105,7 +105,7 @@ FLASK_ENV=development
 python app.py
 ```
 
-The app will start at 👉 **[http://127.0.0.1:5000/](http://127.0.0.1:5000/)**
+The app will start at 👉 **[https://campus-hub-eta-eight.vercel.app/](https://campus-hub-eta-eight.vercel.app/)**
 
 ---
 
